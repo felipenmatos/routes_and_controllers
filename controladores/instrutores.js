@@ -9,6 +9,12 @@ function consultarUmInstrutor(req, res) {
     (instrutor) => instrutor.id === Number(req.params.idFilter)
   );
 
+  if (!instrutor) {
+    res.status(404);
+    res.json({ erro: "instrutor(a) " + req.params.idFilter + " não existe" });
+    return;
+  }
+
   res.json(instrutor);
 }
 

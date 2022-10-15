@@ -1,15 +1,11 @@
 const express = require("express");
 const roteador = require("./roteador");
+const { logarRequisicao, travaDeSenha } = require("./intermediarios");
 
 const app = express();
 app.use(express.json());
-
-//implementation middleware
-app.use((req, res, next) => {
-  console.log(req.method, req.url);
-  console.log("O corpo da mensagem é:", req.body);
-  next();
-});
+app.use(logarRequisicao);
+app.use(travaDeSenha);
 
 app.use(roteador);
 

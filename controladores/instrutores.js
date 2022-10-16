@@ -1,5 +1,14 @@
 const listaDeInstrutores = require("../dados/instrutores");
 
+const areasDeAtuacaoValida = [
+  "Lógica",
+  "Back-end",
+  "FullStack",
+  "Front-end",
+  "Flutter",
+  "UI/UX",
+];
+
 function consultarTodosOsInstrutores(req, res) {
   res.json(listaDeInstrutores);
 }
@@ -21,7 +30,67 @@ function consultarUmInstrutor(req, res) {
 let proximoId = 4;
 
 function criarUmInstrutor(req, res) {
-  console.log(req.body);
+  if (!req.body.nome) {
+    res.status(400);
+    res.json({ erro: "O campo 'nome' é obrigatório" });
+    return;
+  }
+
+  if (!req.body.idade) {
+    res.status(400);
+    res.json({ erro: "O campo 'idade' é obrigatório" });
+    return;
+  }
+
+  if (!req.body.areaDeAtuacao) {
+    res.status(400);
+    res.json({ erro: "O campo 'areaDeAtuacao' é obrigatório" });
+    return;
+  }
+
+  if (typeof req.body.nome !== "string") {
+    res.status(400);
+    res.json({ erro: "O campo nome deve ser preenchido como um texto" });
+    return;
+  }
+
+  if (typeof req.body.idade !== "number") {
+    res.status(400);
+    res.json({ erro: "O campo idade deve ser preenchido como um número" });
+    return;
+  }
+
+  if (typeof req.body.areaDeAtuacao !== "string") {
+    res.status(400);
+    res.json({
+      erro: "O campo areaDeAtuacao deve ser preenchido como um texto",
+    });
+    return;
+  }
+
+  if (typeof req.body.areaDeAtuacao !== "string") {
+    res.status(400);
+    res.json({
+      erro: "O campo areaDeAtuacao deve ser preenchido como um texto",
+    });
+    return;
+  }
+
+  if (req.body.idade < 18) {
+    res.status(400);
+    res.json({
+      erro: "O instrutor deve ser maior de idade.",
+    });
+    return;
+  }
+
+  if (!areasDeAtuacaoValida.includes(req.body.areaDeAtuacao)) {
+    res.status(400);
+    res.json({
+      erro: "Área de atuação formada é invalida.",
+    });
+    return;
+  }
 
   const novoInstrutor = {
     id: proximoId,

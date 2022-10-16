@@ -29,66 +29,50 @@ function consultarUmInstrutor(req, res) {
 
 let proximoId = 4;
 
+function validarInstrutor(instrutor) {
+  if (!instrutor.nome) {
+    return "O campo 'nome' é obrigatório";
+  }
+
+  if (!instrutor.idade) {
+    return "O campo 'idade' é obrigatório";
+  }
+
+  if (!instrutor.areaDeAtuacao) {
+    return "O campo 'areaDeAtuacao' é obrigatório";
+  }
+
+  if (typeof instrutor.nome !== "string") {
+    return "O campo nome deve ser preenchido como um texto";
+  }
+
+  if (typeof instrutor.idade !== "number") {
+    return "O campo idade deve ser preenchido como um número";
+  }
+
+  if (typeof instrutor.areaDeAtuacao !== "string") {
+    return "O campo areaDeAtuacao deve ser preenchido como um texto";
+  }
+
+  if (typeof instrutor.areaDeAtuacao !== "string") {
+    return "O campo areaDeAtuacao deve ser preenchido como um texto";
+  }
+
+  if (instrutor.idade < 18) {
+    return "O instrutor deve ser maior de idade.";
+  }
+
+  if (!areasDeAtuacaoValida.includes(instrutor.areaDeAtuacao)) {
+    return "Área de atuação formada é invalida.";
+  }
+}
+
 function criarUmInstrutor(req, res) {
-  if (!req.body.nome) {
-    res.status(400);
-    res.json({ erro: "O campo 'nome' é obrigatório" });
-    return;
-  }
+  const erro = validarInstrutor(req.body);
 
-  if (!req.body.idade) {
+  if (erro) {
     res.status(400);
-    res.json({ erro: "O campo 'idade' é obrigatório" });
-    return;
-  }
-
-  if (!req.body.areaDeAtuacao) {
-    res.status(400);
-    res.json({ erro: "O campo 'areaDeAtuacao' é obrigatório" });
-    return;
-  }
-
-  if (typeof req.body.nome !== "string") {
-    res.status(400);
-    res.json({ erro: "O campo nome deve ser preenchido como um texto" });
-    return;
-  }
-
-  if (typeof req.body.idade !== "number") {
-    res.status(400);
-    res.json({ erro: "O campo idade deve ser preenchido como um número" });
-    return;
-  }
-
-  if (typeof req.body.areaDeAtuacao !== "string") {
-    res.status(400);
-    res.json({
-      erro: "O campo areaDeAtuacao deve ser preenchido como um texto",
-    });
-    return;
-  }
-
-  if (typeof req.body.areaDeAtuacao !== "string") {
-    res.status(400);
-    res.json({
-      erro: "O campo areaDeAtuacao deve ser preenchido como um texto",
-    });
-    return;
-  }
-
-  if (req.body.idade < 18) {
-    res.status(400);
-    res.json({
-      erro: "O instrutor deve ser maior de idade.",
-    });
-    return;
-  }
-
-  if (!areasDeAtuacaoValida.includes(req.body.areaDeAtuacao)) {
-    res.status(400);
-    res.json({
-      erro: "Área de atuação formada é invalida.",
-    });
+    res.json({ erro });
     return;
   }
 
@@ -112,6 +96,24 @@ function editarInstrutor(req, res) {
   const instrutor = listaDeInstrutores.find(
     (instrutor) => instrutor.id === Number(req.params.idFilter)
   );
+
+  if (!instrutor) {
+    res.status(404);
+    res.json({ erro: "instrutor(a) " + req.params.idFilter + " não existe" });
+    return;
+  }
+
+  const erro = validarInstrutor({
+    nome: req.body.nome ?? instrutor.nome,
+    idade: req.body.idade ?? instrutor.idade,
+    areaDeAtuacao: req.body.areaDeAtuacao ?? instrutor.areaDeAtuacao,
+  });
+
+  if (erro) {
+    res.status(400);
+    res.json({ erro });
+    return;
+  }
 
   if (req.body.nome !== undefined) {
     instrutor.nome = req.body.nome;

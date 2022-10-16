@@ -131,6 +131,22 @@ function editarInstrutor(req, res) {
 }
 
 function substituirInstrutor(req, res) {
+  const erro = validarInstrutor(req.body);
+
+  if (erro) {
+    res.status(400);
+    res.json({ erro });
+    return;
+  }
+
+  if (req.body.id !== Number(req.params.idFilter)) {
+    res.status(400);
+    res.json({
+      erro: "O campo 'id' deve ser igual na rota e no campo de requisição",
+    });
+    return;
+  }
+
   const instrutor = listaDeInstrutores.find(
     (instrutor) => instrutor.id === Number(req.params.idFilter)
   );
@@ -155,6 +171,12 @@ function deletarInstrutor(req, res) {
   );
 
   //posicao que esta dentro da lista
+
+  if (!instrutor) {
+    res.status(404);
+    res.json({ erro: "instrutor(a) " + req.params.idFilter + " não existe" });
+    return;
+  }
 
   const indice = listaDeInstrutores.indexOf(instrutor);
 

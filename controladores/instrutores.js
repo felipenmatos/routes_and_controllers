@@ -1,4 +1,4 @@
-const listaDeInstrutores = require("../dados/instrutores");
+const { listaDeInstrutores, salvarInstrutor } = require("../dados/instrutores");
 
 const areasDeAtuacaoValida = [
   "Lógica",
@@ -86,6 +86,7 @@ function criarUmInstrutor(req, res) {
   //adicionando o recurso através do método push que adiciona um item no final da lista
 
   listaDeInstrutores.push(novoInstrutor);
+  salvarInstrutor();
 
   proximoId += 1;
 
@@ -128,6 +129,7 @@ function editarInstrutor(req, res) {
   }
 
   res.json(instrutor);
+  salvarInstrutor();
 }
 
 function substituirInstrutor(req, res) {
@@ -163,6 +165,7 @@ function substituirInstrutor(req, res) {
     listaDeInstrutores.push(novoInstrutor);
     res.json(novoInstrutor);
   }
+  salvarInstrutor();
 }
 
 function deletarInstrutor(req, res) {
@@ -186,6 +189,7 @@ function deletarInstrutor(req, res) {
 
   //no express deve sempre resposponder uma requisicao
   res.json(instrutor);
+  salvarInstrutor();
 }
 
 module.exports = {

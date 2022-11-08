@@ -27,7 +27,8 @@ function consultarUmInstrutor(req, res) {
   res.json(instrutor);
 }
 
-let proximoId = 4;
+let numberId = listaDeInstrutores[listaDeInstrutores.length - 1].id;
+let proximoId = parseInt(numberId.toString()) + 1;
 
 function validarInstrutor(instrutor) {
   if (!instrutor.nome) {

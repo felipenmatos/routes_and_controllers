@@ -64,7 +64,7 @@ function validarInstrutor(instrutor) {
   }
 
   if (!areasDeAtuacaoValida.includes(instrutor.areaDeAtuacao)) {
-    return "Área de atuação formada é invalida.";
+    return "Área de atuação informada é invalida.";
   }
 }
 
